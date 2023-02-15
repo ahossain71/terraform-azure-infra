@@ -16,16 +16,16 @@ provider "azurerm" {
 }
 
 # Create a Resource Group if it doesn’t exist
-resource "azurerm_resource_group" "tfexample" {
+resource "azurerm_resource_group" "tftraining" {
   name     = "my-terraform-rg"
   location = "West Europe"
 }
 
 # Create a Virtual Network
-resource "azurerm_virtual_network" "tfexample" {
+resource "azurerm_virtual_network" "tftraining" {
   name                = "my-terraform-vnet"
-  location            = azurerm_resource_group.tfexample.location
-  resource_group_name = azurerm_resource_group.tfexample.name
+  location            = azurerm_resource_group.tftraining.location
+  resource_group_name = azurerm_resource_group.tftraining.name
   address_space       = ["10.0.0.0/16"]
 
   tags = {
@@ -34,18 +34,18 @@ resource "azurerm_virtual_network" "tfexample" {
 }
 
 # Create a Subnet in the Virtual Network
-resource "azurerm_subnet" "tfexample" {
+resource "azurerm_subnet" "tftraining" {
   name                 = "my-terraform-subnet"
-  resource_group_name  = azurerm_resource_group.tfexample.name
-  virtual_network_name = azurerm_virtual_network.tfexample.name
+  resource_group_name  = azurerm_resource_group.tftraining.name
+  virtual_network_name = azurerm_virtual_network.tftraining.name
   address_prefixes     = ["10.0.2.0/24"]
 }
 
 # Create a Public IP
-resource "azurerm_public_ip" "tfexample" {
+resource "azurerm_public_ip" "tftraining" {
   name                = "my-terraform-public-ip"
-  location            = azurerm_resource_group.tfexample.location
-  resource_group_name = azurerm_resource_group.tfexample.name
+  location            = azurerm_resource_group.tftraining.location
+  resource_group_name = azurerm_resource_group.tftraining.name
   allocation_method   = "Static"
 
   tags = {
@@ -54,10 +54,10 @@ resource "azurerm_public_ip" "tfexample" {
 }
 
 # Create a Network Security Group and rule
-resource "azurerm_network_security_group" "tfexample" {
+resource "azurerm_network_security_group" "tftraining" {
   name                = "my-terraform-nsg"
-  location            = azurerm_resource_group.tfexample.location
-  resource_group_name = azurerm_resource_group.tfexample.name
+  location            = azurerm_resource_group.tftraining.location
+  resource_group_name = azurerm_resource_group.tftraining.name
 
   security_rule {
     name                       = "HTTP"
@@ -77,16 +77,16 @@ resource "azurerm_network_security_group" "tfexample" {
 }
 
 # Create a Network Interface
-resource "azurerm_network_interface" "tfexample" {
+resource "azurerm_network_interface" "tftraining" {
   name                = "my-terraform-nic"
-  location            = azurerm_resource_group.tfexample.location
-  resource_group_name = azurerm_resource_group.tfexample.name
+  location            = azurerm_resource_group.tftraining.location
+  resource_group_name = azurerm_resource_group.tftraining.name
 
   ip_configuration {
     name                          = "my-terraform-nic-ip-config"
-    subnet_id                     = azurerm_subnet.tfexample.id
+    subnet_id                     = azurerm_subnet.tftraining.id
     private_ip_address_allocation = "Dynamic"
-    public_ip_address_id          = azurerm_public_ip.tfexample.id
+    public_ip_address_id          = azurerm_public_ip.tftraining.id
   }
 
   tags = {
@@ -95,17 +95,17 @@ resource "azurerm_network_interface" "tfexample" {
 }
 
 # Create a Network Interface Security Group association
-resource "azurerm_network_interface_security_group_association" "tfexample" {
-  network_interface_id      = azurerm_network_interface.tfexample.id
-  network_security_group_id = azurerm_network_security_group.tfexample.id
+resource "azurerm_network_interface_security_group_association" "tftraining" {
+  network_interface_id      = azurerm_network_interface.tftraining.id
+  network_security_group_id = azurerm_network_security_group.tftraining.id
 }
 
 # Create a Virtual Machine
-resource "azurerm_linux_virtual_machine" "tfexample" {
+resource "azurerm_linux_virtual_machine" "tftraining" {
   name                            = "my-terraform-vm"
-  location                        = azurerm_resource_group.tfexample.location
-  resource_group_name             = azurerm_resource_group.tfexample.name
-  network_interface_ids           = [azurerm_network_interface.tfexample.id]
+  location                        = azurerm_resource_group.tftraining.location
+  resource_group_name             = azurerm_resource_group.tftraining.name
+  network_interface_ids           = [azurerm_network_interface.tftraining.id]
   size                            = "Standard_DS1_v2"
   computer_name                   = "myvm"
   admin_username                  = "azureuser"
@@ -131,9 +131,9 @@ resource "azurerm_linux_virtual_machine" "tfexample" {
 }
 
 # Configurate to run automated tasks in the VM start-up
-resource "azurerm_virtual_machine_extension" "tfexample" {
+resource "azurerm_virtual_machine_extension" "tftraining" {
   name                 = "hostname"
-  virtual_machine_id   = azurerm_linux_virtual_machine.tfexample.id
+  virtual_machine_id   = azurerm_linux_virtual_machine.tftraining.id
   publisher            = "Microsoft.Azure.Extensions"
   type                 = "CustomScript"
   type_handler_version = "2.1"
@@ -150,12 +150,12 @@ resource "azurerm_virtual_machine_extension" "tfexample" {
 }
 
 # Data source to access the properties of an existing Azure Public IP Address
-data "azurerm_public_ip" "tfexample" {
-  name                = azurerm_public_ip.tfexample.name
-  resource_group_name = azurerm_linux_virtual_machine.tfexample.resource_group_name
+data "azurerm_public_ip" "tftraining" {
+  name                = azurerm_public_ip.tftraining.name
+  resource_group_name = azurerm_linux_virtual_machine.tftraining.resource_group_name
 }
 
 # Output variable: Public IP address
 output "public_ip" {
-  value = data.azurerm_public_ip.tfexample.ip_address
+  value = data.azurerm_public_ip.tftraining.ip_address
 }
