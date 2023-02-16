@@ -7,7 +7,7 @@ pipeline {
           catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
             withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'AutoCredName', usernameVariable: 'AutoCredUser', passwordVariable: 'AutoCredPass']]) {
               sh "chmod 755 code/03-one-webserver"
-              sh "cd JENKINS_HOME/workspace/training-iac/code/03-one-webserver"
+              sh "cd code/03-one-webserver"
               sh "terraform init"
               sh "terraform plan -out=training-infra-plan"
               sh "terraform apply"
