@@ -9,10 +9,11 @@ pipeline {
               sh script:'''
               #!/bin/bash
               chmod 755 code/03-one-webserver
-              cd code/03-one-webserver
+              cd ./code/03-one-webserver
               ls
               terraform init
-              terraform plan -out=training-infra-plan
+              terraform plan
+              //terraform plan -out=training-infra-plan
               //sh "aws cloudformation deploy --template-file $workspace/code/05-cluster-webserver/main.tf --stack-name Training-infra-Stack-Test --location East US"
               //sh "echo SKIPPING INFRASTRUCTURE CREATION/UPDATE for now .."
               '''
