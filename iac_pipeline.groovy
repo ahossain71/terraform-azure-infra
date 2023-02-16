@@ -6,14 +6,16 @@ pipeline {
       steps {
           catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
             withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'AutoCredName', usernameVariable: 'AutoCredUser', passwordVariable: 'AutoCredPass']]) {
-              sh "chmod 755 code/03-one-webserver"
-              sh "cd code/03-one-webserver"
-              sh "ls"
-              sh "terraform init"
-              sh "terraform plan -out=training-infra-plan"
-              sh "terraform apply"
+              sh script:'''
+              #!/bin/bash
+              chmod 755 code/03-one-webserver
+              cd code/03-one-webserver
+              ls
+              terraform init
+              terraform plan -out=training-infra-plan
               //sh "aws cloudformation deploy --template-file $workspace/code/05-cluster-webserver/main.tf --stack-name Training-infra-Stack-Test --location East US"
               //sh "echo SKIPPING INFRASTRUCTURE CREATION/UPDATE for now .."
+              '''
             }//end withCredentials
             sh "exit 0"
          }//end catcherror
