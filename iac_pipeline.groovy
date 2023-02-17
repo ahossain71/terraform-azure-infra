@@ -12,7 +12,6 @@ pipeline {
               cd ./code/03-one-webserver
               ls
               terraform init
-              az login -u azfar.hossain71@gmail.com -p MegherKole@2023
               terraform plan
               //terraform plan -out=training-infra-plan
               //sh "aws cloudformation deploy --template-file $workspace/code/05-cluster-webserver/main.tf --stack-name Training-infra-Stack-Test --location East US"
