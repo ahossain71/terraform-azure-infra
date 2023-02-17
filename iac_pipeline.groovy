@@ -15,7 +15,7 @@ pipeline {
               echo "GENERATING TERRAFORM PLAN"              
               terraform plan -out=training-infra-plan
               echo "GENERATING TERRAFORM RESOURCES IN THE SUBSCRIPTION"
-              terraform apply
+              terraform apply -auto-approve
               '''
             }//end withCredentials
             sh "exit 0"
