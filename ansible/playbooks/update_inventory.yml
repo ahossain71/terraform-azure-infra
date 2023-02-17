@@ -1,0 +1,63 @@
+---
+- hosts: "localhost"
+  connection: local
+  become: false
+  gather_facts: true  
+  
+  tasks:
+   
+    - name : Execute script
+      #command: 'ansible -i /etc/ansible/ec2.py tag_Name_tomcat-node* --list'
+      command: 'ansible -i /etc/ansible/ec2.py ec2 --list'
+      register: result
+
+    #- set_fact:
+    #    #target_hosts: "{{ result.stdout_lines.ansible_facts.hosts | select('match','^((25[0-5]|(2[0-4]|1[0-9]|[1-9]|)[0-9])(\\.(?!$)|$)){4}$') | list }}" 
+    #    hosts_list: "{{ result.stdout_lines | list }}"
+    #  register: hosts_list
+
+    #- debug:
+    #    var: hosts_list
+         
+    #- set_fact: 
+    #    target_hosts: []
+         
+    #- name: add host Ip addresses to gloabal variable tomcatnodes
+    #  set_fact:
+    #    tomcatnodes: "{{ target_hosts + [item.1] }}"
+    #  when: item.0 > 0
+    #  with_indexed_items: "{{ hosts_list.ansible_facts.hosts_list }}"
+
+    #- debug:
+    #    var: "{{ target_hosts }}"
+
+    #- name: Update the ../inventory/hosts file with node name
+    #  tags: inventoryhostsupdate
+    #  become: yes
+    #  become_user: "root"
+    #  lineinfile:
+    #    path: "../inventory/hosts"
+    #    regexp: ".*\t{{ hostvars[item]['ansible_hostname']}}\t{{ hostvars[item]['ansible_hostname']}}"
+    #    line: "{{ hostvars[item]['ansible_env'].SSH_CONNECTION.split(' ')[2] }}\t{{ hostvars[item]['ansible_hostname']}}\t{{ hostvars[item]['ansible_hostname']}}"
+    #    state: present
+    #    backup: no
+    #  register: inventoryhostsupdate
+    #  when: ansible_hostname != "{{ item }}" or ansible_hostname == "{{ item }}"
+    #  with_items: "{{groups['tomcatnodes']}}"
+
+    #- name: Update the ../inventory/hosts file with node name
+    #  tags: inventoryhostsupdate
+    #  become: yes
+    #  become_user: "root"
+    #  lineinfile:
+    #    path: "../inventory/hosts"
+    #    regexp: ".*\t{{ target_hosts[item]['ansible_hostname']}}\t{{ target_hosts[item]['ansible_hostname']}}"
+    #    line: "{{ target_hosts[item]['ansible_env'].SSH_CONNECTION.split(' ')[2] }}\t{{ target_hosts[item]['ansible_hostname']}}\t{{ target_hosts[item]['ansible_hostname']}}"
+    #    state: present
+    #    backup: no
+    #  register: inventoryhostsupdate
+    #  when: ansible_hostname != "{{ item }}" or ansible_hostname == "{{ item }}"
+    #  with_items: "{{groups['tomcatnodes']}}"
+
+    #- debug:
+    #     var: inventoryhostsupdate

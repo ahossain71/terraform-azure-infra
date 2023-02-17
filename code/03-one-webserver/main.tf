@@ -144,6 +144,11 @@ resource "azurerm_linux_virtual_machine" "tftraining" {
     storage_account_type = "Standard_LRS"
     caching              = "ReadWrite"
   }
+  
+  #admin_ssh_key {
+  #  username   = "azureuser"
+  #  public_key = tls_private_key.example_ssh.public_key_openssh
+  #}
 
   tags = {
     environment = "my-terraform-env"

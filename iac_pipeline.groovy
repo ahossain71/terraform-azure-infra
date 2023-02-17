@@ -14,11 +14,11 @@ pipeline {
               terraform init
               echo "GENERATING TERRAFORM PLAN"              
               terraform plan -out=training-infra-plan
-              echo "GENERATING TERRAFORM RESOURCES IN THE SUBSCRIPTION"
+              echo "GENERATING TERRAFORM RESOURCES IN THE SUBSCRIPTION..."
               terraform apply -auto-approve
-              sleep 1m
-              echo "DESTROYING A VM RESOURCE IN THE RESOURCE GROUP"
-              terraform destroy -target=azurerm_linux_virtual_machine.tftraining -auto-approve
+              #sleep 1m
+              #echo "DESTROYING A VM RESOURCE IN THE RESOURCE GROUP"
+              #terraform destroy -target=azurerm_linux_virtual_machine.tftraining -auto-approve
               '''
             }//end withCredentials
             sh "exit 0"
@@ -35,6 +35,7 @@ pipeline {
          }//end catchError
       }
     }
+    
     stage('Configure Tomcat') {
       steps {
         catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {

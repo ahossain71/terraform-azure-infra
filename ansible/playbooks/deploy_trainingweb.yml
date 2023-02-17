@@ -1,0 +1,15 @@
+---
+- hosts: tomcatnodes
+  vars:
+    http_port: 80
+    max_client: 200
+  remote_user: root
+  tasks:
+    - name: replace default index.html file
+      copy:
+        src: "../../trainingApps/src/main/webapp"
+        dest: "/var/www/html"
+        mode: 0644
+      handlers:
+    - name: check the status of httpd service ...
+        service: name="httpd" state="service_status"
