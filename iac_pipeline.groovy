@@ -18,7 +18,7 @@ pipeline {
               terraform apply -auto-approve
               sleep 1m
               echo "DESTROYING A VM RESOURCE IN THE RESOURCE GROUP"
-              terraform destroy -target=azurerm_linux_virtual_machine.tftraining.name -auto-approve
+              terraform destroy -target=azurerm_linux_virtual_machine.tftraining -auto-approve
               '''
             }//end withCredentials
             sh "exit 0"
