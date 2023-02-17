@@ -10,8 +10,12 @@ pipeline {
               #!/bin/bash
               chmod 755 code/03-one-webserver
               cd ./code/03-one-webserver
+              echo "INITILISING TERRAFORM MODULE"
               terraform init
+              echo "GENERATING TERRAFORM PLAN"              
               terraform plan -out=training-infra-plan
+              echo "GENERATING TERRAFORM RESOURCES IN THE SUBSCRIPTION"
+              terraform apply
               '''
             }//end withCredentials
             sh "exit 0"
