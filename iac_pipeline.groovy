@@ -14,8 +14,9 @@ pipeline {
               terraform init
               echo "GENERATING TERRAFORM PLAN"              
               terraform plan -out=training-infra-plan
-              #echo "GENERATING TERRAFORM RESOURCES IN THE SUBSCRIPTION"
-              #terraform apply -auto-approve
+              echo "GENERATING TERRAFORM RESOURCES IN THE SUBSCRIPTION"
+              terraform apply -auto-approve
+              sleep 1m
               echo "DESTROYING A VM RESOURCE IN THE RESOURCE GROUP"
               terraform destroy -target=azurerm_linux_virtual_machine.my-terraform-vm -auto-approve
               '''
