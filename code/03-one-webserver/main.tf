@@ -38,7 +38,7 @@ provider "azurerm" {
 # Create a Resource Group if it doesn’t exist
 resource "azurerm_resource_group" "tftraining" {
   name     = "my-terraform-rg"
-  location = "US EAST 2"
+  location = "EAST US 2"
 }
 
 # Create a Virtual Network
