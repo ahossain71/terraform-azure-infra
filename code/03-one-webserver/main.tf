@@ -120,6 +120,18 @@ resource "azurerm_network_interface_security_group_association" "tftraining" {
   network_security_group_id = azurerm_network_security_group.tftraining.id
 }
 
+# Get existing Key Vault
+data "azurerm_key_vault" "my-DevOps-key-vault" {
+  name                = "my-DevOps-key-vault"
+  resource_group_name = "trng-DevOps-rgrp"
+}
+
+# Get existing Key
+data "azurerm_key_vault_key" "my-trng-ssh-key" {
+  name         = "my-trng-ssh-key"
+  key_vault_id = data.azurerm_key_vault.my-DevOps-key-vault.id
+}
+
 # Create a Virtual Machine
 resource "azurerm_linux_virtual_machine" "tftraining" {
   name                            = "my-terraform-vm"
@@ -128,9 +140,14 @@ resource "azurerm_linux_virtual_machine" "tftraining" {
   network_interface_ids           = [azurerm_network_interface.tftraining.id]
   size                            = "Standard_DS1_v2"
   computer_name                   = "myvm"
+  #admin_username                  = "azureuser"
+  #admin_password                  = "Password1234!"
   admin_username                  = "azureuser"
-  admin_password                  = "Password1234!"
-  disable_password_authentication = false
+  admin_ssh_key {
+    username = "azureuser"
+    public_key = data.azurerm_key_vault_key.my-trng-ssh-key.public_key_openssh
+  }
+  disable_password_authentication = true
 
   source_image_reference {
     publisher = "Canonical"
@@ -145,11 +162,6 @@ resource "azurerm_linux_virtual_machine" "tftraining" {
     caching              = "ReadWrite"
   }
   
-  #admin_ssh_key {
-  #  username   = "azureuser"
-  #  public_key = tls_private_key.example_ssh.public_key_openssh
-  #}
-
   tags = {
     environment = "my-terraform-env"
   }
