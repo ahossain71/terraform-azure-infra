@@ -45,9 +45,7 @@ pipeline {
               #echo "PATH is: $ANS_HOME"
               #whoami
               #echo $PATH
-              cd /var/lib/jenkins/workspace/training-iac
-              chmod 755 ./ansible/playbooks
-              /usr/bin/ansible-playbook ./ansible/playbooks/tomcat-setup.yml --user ubuntu -vvv --key-file ${my-trng-devops-ssh-02}
+              ~/.local/bin/ansible-playbook ./ansible/playbooks/tomcat-setup.yml --user ubuntu -vvv --key-file ${my-trng-devops-ssh-02}
             '''
             }//end withCredentials
           sh "exit 0"
