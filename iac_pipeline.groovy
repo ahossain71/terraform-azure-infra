@@ -8,14 +8,14 @@ pipeline {
             withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'AutoCredName', usernameVariable: 'AutoCredUser', passwordVariable: 'AutoCredPass']]) {
               sh script:'''
               #!/bin/bash
-              chmod 755 code/03-one-webserver
-              cd ./code/03-one-webserver
-              echo "INITILISING TERRAFORM MODULE"
-              terraform init
-              echo "GENERATING TERRAFORM PLAN"              
-              terraform plan -out=training-infra-plan
-              echo "GENERATING TERRAFORM RESOURCES IN THE SUBSCRIPTION..."
-              terraform apply -auto-approve
+              #chmod 755 code/03-one-webserver
+              #cd ./code/03-one-webserver
+              #echo "INITILISING TERRAFORM MODULE"
+              #terraform init
+              #echo "GENERATING TERRAFORM PLAN"              
+              #terraform plan -out=training-infra-plan
+              #echo "GENERATING TERRAFORM RESOURCES IN THE SUBSCRIPTION..."
+              #terraform apply -auto-approve
               #sleep 1m
               #echo "DESTROYING A VM RESOURCE IN THE RESOURCE GROUP"
               #terraform destroy -target=azurerm_linux_virtual_machine.tftraining -auto-approve
@@ -43,9 +43,12 @@ pipeline {
             sh 'ansible-playbook ./ansible/playbooks/tomcat-setup.yml --user ubuntu -vvv --key-file ${my-trng-devops-ssh-02}'
             sh script:'''
              #!/bin/bash
-              cd /var/lib/jenkins/workspace/training-iac
-              chmod 755 ./ansible/playbooks
-              /usr/bin/ansible-playbook ./ansible/playbooks/tomcat-setup.yml --user ubuntu -vvv --key-file ${my-trng-devops-ssh-02}
+              echo "PATH is: $ANS_HOME"
+              sh "whoami"
+              sh "echo $PATH"
+              #cd /var/lib/jenkins/workspace/training-iac
+              #chmod 755 ./ansible/playbooks
+              #/usr/bin/ansible-playbook ./ansible/playbooks/tomcat-setup.yml --user ubuntu -vvv --key-file ${my-trng-devops-ssh-02}
             '''
             }//end withCredentials
           sh "exit 0"
