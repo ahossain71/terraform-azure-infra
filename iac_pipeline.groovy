@@ -25,7 +25,7 @@ pipeline {
          }//end catcherror
       }
     }
- /*   stage('Update Inventory'){
+  /*stage('Update Inventory'){
       steps{
         catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
               withCredentials([sshUserPrivateKey(credentialsId: '45b077dc-baea-4366-8573-1289626eb6d3', keyFileVariable: 'my-trng-ssh-key')]) {
@@ -39,7 +39,7 @@ pipeline {
     stage('Configure Tomcat') {
       steps {
         catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-          withCredentials([sshUserPrivateKey(credentialsId: '45b077dc-baea-4366-8573-1289626eb6d3', keyFileVariable: 'my-trng-ssh-key')]) {
+          withCredentials([sshUserPrivateKey(credentialsId: '1af83a22-d280-4642-a6bc-1e256e53a239', keyFileVariable: 'my-trng-devops-ssh-02')]) {  
             sh 'ansible-playbook ./ansible/playbooks/tomcat-setup.yml --user ubuntu -vvv --key-file ${my-trng-ssh-key}'
             }//end withCredentials
           sh "exit 0"
