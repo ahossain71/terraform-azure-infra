@@ -45,7 +45,7 @@ pipeline {
              #!/bin/bash
               cd /var/lib/jenkins/workspace/training-iac
               chmod 755 ./ansible/playbooks
-              ansible-playbook ./ansible/playbooks/tomcat-setup.yml --user ubuntu -vvv --key-file ${my-trng-devops-ssh-02}
+              /usr/bin/ansible-playbook ./ansible/playbooks/tomcat-setup.yml --user ubuntu -vvv --key-file ${my-trng-devops-ssh-02}
             '''
             }//end withCredentials
           sh "exit 0"
