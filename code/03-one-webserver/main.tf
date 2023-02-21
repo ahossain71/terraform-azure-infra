@@ -144,10 +144,10 @@ data "azurerm_key_vault_key" "my-trng-devops-ssh-key-02" {
   key_vault_id = data.azurerm_key_vault.trng-devops-vault.id
 }
 */
-admin_ssh_key {
-        username = "azureuser"
-        public_key = tls_private_key.example_ssh.public_key_openssh #The magic here
-    }
+resource "tls_private_key" "example_ssh" {
+    algorithm = "RSA"
+    rsa_bits = 4096
+}
 
 # Create a Virtual Machine
 resource "azurerm_linux_virtual_machine" "tftraining" {
