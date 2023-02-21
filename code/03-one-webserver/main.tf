@@ -132,6 +132,7 @@ resource "azurerm_network_interface_security_group_association" "tftraining" {
 }
 
 # Get existing Key Vault
+/*
 data "azurerm_key_vault" "trng-devops-vault" {
   name                = "trng-devops-vault"
   resource_group_name = "trng-devops-rg"
@@ -142,13 +143,11 @@ data "azurerm_key_vault_key" "my-trng-devops-ssh-key-02" {
   name         = "my-trng-devops-ssh-key-02"
   key_vault_id = data.azurerm_key_vault.trng-devops-vault.id
 }
-
-/*
-resource "tls_private_key" "example_ssh" {
+*/
+resource "tls_private_key" "training_ssh" {
     algorithm = "RSA"
     rsa_bits = 4096
 }
-*/
 
 # Create a Virtual Machine
 resource "azurerm_linux_virtual_machine" "tftraining" {
@@ -163,8 +162,8 @@ resource "azurerm_linux_virtual_machine" "tftraining" {
    
   admin_ssh_key {
     username = "azureuser"
-    public_key = data.azurerm_key_vault_key.my-trng-devops-ssh-key-02.public_key_openssh
-    #public_key = tls_private_key.example_ssh.public_key_openssh #The magic here
+    #public_key = data.azurerm_key_vault_key.my-trng-devops-ssh-key-02.public_key_openssh
+    public_key = tls_private_key.training_ssh.public_key_openssh #The magic here
     }
     
   disable_password_authentication = true

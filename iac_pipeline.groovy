@@ -37,6 +37,7 @@ pipeline {
       }
     }
     */
+    /*
     stage('Configure Tomcat') {
       steps {
         catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
