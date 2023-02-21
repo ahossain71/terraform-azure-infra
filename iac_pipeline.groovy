@@ -38,7 +38,7 @@ pipeline {
       }
     }
     */
-    /*
+    
     stage('Configure Tomcat') {
       steps {
         catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
@@ -54,6 +54,6 @@ pipeline {
           sh "exit 0"
          }//end catchError
       }//end steps
-    } //end stage */
+    } //end stage
   } //end stages
 }//end pipeline
