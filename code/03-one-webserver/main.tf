@@ -132,6 +132,7 @@ resource "azurerm_network_interface_security_group_association" "tftraining" {
 }
 
 # Get existing Key Vault
+/*
 data "azurerm_key_vault" "trng-devops-vault" {
   name                = "trng-devops-vault"
   resource_group_name = "trng-devops-rg"
@@ -142,7 +143,7 @@ data "azurerm_key_vault_key" "my-trng-devops-ssh-key-02" {
   name         = "my-trng-devops-ssh-key-02"
   key_vault_id = data.azurerm_key_vault.trng-devops-vault.id
 }
-
+*/
 # Create a Virtual Machine
 resource "azurerm_linux_virtual_machine" "tftraining" {
   name                            = "my-terraform-vm"
@@ -154,10 +155,12 @@ resource "azurerm_linux_virtual_machine" "tftraining" {
   #admin_username                  = "azureuser"
   admin_password                  = "Password1234!"
   admin_username                  = "azureuser"
+  /*
   admin_ssh_key {
     username = "azureuser"
     public_key = data.azurerm_key_vault_key.my-trng-devops-ssh-key-02.public_key_openssh
   }
+  */
   disable_password_authentication = true
 
   source_image_reference {
