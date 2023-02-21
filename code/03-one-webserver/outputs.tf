@@ -8,5 +8,5 @@ output "public_ip_address" {
 
 output "tls_private_key" {
   value     = tls_private_key.training_ssh.private_key_pem
-  sensitive = false
+  sensitive = true
 }
