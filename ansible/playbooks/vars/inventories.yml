@@ -1,4 +1,3 @@
 ---
-target_hosts: []
-108.143.82.27
+target_hosts: [108.143.82.27]
 #name: "Tom Harry"
