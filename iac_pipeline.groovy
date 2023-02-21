@@ -25,17 +25,17 @@ pipeline {
          }//end catcherror
       }
     }
-  /*stage('Update Inventory'){
+  stage('Update Inventory'){
       steps{
         catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-              withCredentials([sshUserPrivateKey(credentialsId: '45b077dc-baea-4366-8573-1289626eb6d3', keyFileVariable: 'my-trng-ssh-key')]) {
-                sh 'ansible-playbook ./ansible/playbooks/update_inventory.yml --user ubuntu --key-file ${myTestKeyPair02}' 
-           }//end withCredentials
-          sh "exit 0"
-         }//end catchError
+          withCredentials([sshUserPrivateKey(credentialsId: '1af83a22-d280-4642-a6bc-1e256e53a239', keyFileVariable: 'my-trng-devops-ssh-02')]) {  
+             sh 'ansible-playbook ./ansible/playbooks/update_inventory.yml --user ubuntu --key-file ${my-trng-devops-ssh-02}' 
+          }//end withCredentials
+        sh "exit 0"
+       }//end catchError
       }
     }
-  */
+  
     stage('Configure Tomcat') {
       steps {
         catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
