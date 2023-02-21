@@ -121,15 +121,15 @@ resource "azurerm_network_interface_security_group_association" "tftraining" {
 }
 
 # Get existing Key Vault
-data "azurerm_key_vault" "my-DevOps-key-vault" {
-  name                = "my-DevOps-key-vault"
-  resource_group_name = "trng-DevOps-rgrp"
+data "azurerm_key_vault" "trng-devops-vault" {
+  name                = "trng-devops-vault"
+  resource_group_name = "trng-devops-rg"
 }
 
 # Get existing Key
 data "azurerm_key_vault_key" "my-trng-devops-ssh-key-02" {
   name         = "my-trng-devops-ssh-key-02"
-  key_vault_id = data.azurerm_key_vault.my-DevOps-key-vault.id
+  key_vault_id = data.azurerm_key_vault.trng-devops-vault.id
 }
 
 # Create a Virtual Machine
