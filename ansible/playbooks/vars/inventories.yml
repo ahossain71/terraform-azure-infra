@@ -1,3 +1,4 @@
 ---
 target_hosts: [108.143.82.27]
+ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
 #name: "Tom Harry"
