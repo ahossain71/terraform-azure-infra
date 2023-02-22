@@ -43,7 +43,7 @@ pipeline {
       steps {
         catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
            withCredentials([sshUserPrivateKey(credentialsId: '1af83a22-d280-4642-a6bc-1e256e53a239', keyFileVariable: 'my-trng-devops-ssh')]) {
-             sh 'ansible-playbook ./ansible/playbooks/tomcat-setup.yml --user ubuntu --key-file ${my-trng-devops-ssh}' 
+             sh 'ansible-playbook ./ansible/playbooks/tomcat-setup.yml --user azureuser --key-file ${my-trng-devops-ssh}' 
             }//end withCredentials
           sh "exit 0"
          }//end catchError
