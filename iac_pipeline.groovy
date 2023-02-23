@@ -43,8 +43,9 @@ pipeline {
       steps {
         catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
            withCredentials([sshUserPrivateKey(credentialsId: '1af83a22-d280-4642-a6bc-1e256e53a239', keyFileVariable: 'training_ssh')]) {
+             sh 'PRINTING THE CONTENT OF SSH KEY BEFORE USING IT FOR ANSIBLE-PLAYBOOK'
              sh 'echo ${training_ssh}'
-             sh 'ansible-playbook ./ansible/playbooks/tomcat-setup.yml --user azureuser --key-file ${training_ssh} -vvv'
+             //sh 'ansible-playbook ./ansible/playbooks/tomcat-setup.yml --user azureuser --key-file ${training_ssh} -vvv'
              //ansiblePlaybook credentialsId: '1af83a22-d280-4642-a6bc-1e256e53a239', disableHostKeyChecking: true, installation: 'ansible 2.11.12', inventory: './ansible/playbooks/vars/inventories.yml', playbook: './ansible/playbooks/tomcat-setup.yml'
              //sh 'ansible-playbook ./ansible/playbooks/tomcat-setup.yml'
              //sh "ansiblePlaybook credentialsId: '1af83a22-d280-4642-a6bc-1e256e53a239', disableHostKeyChecking: true, installation: 'ansible 2.11.12', inventory: '/ansible/playbooks/vars/inventory.yml', playbook: '/ansible/playbooks/tomcat-setup.yml'"  
