@@ -30,7 +30,7 @@ terraform.rc
 .vscode/
 
 # SSH Keys
-*.pem
+#*.pem
 
 # Backup files
 *.bak
