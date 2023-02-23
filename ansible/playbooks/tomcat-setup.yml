@@ -4,13 +4,14 @@
   become_method: sudo       # Set become method
   remote_user: azureuser    # Update username for remote server
   vars:
-    tomcat_ver: 9.0.30                          # Tomcat version to install
+    tomcat_ver: 9.0.71                          # Tomcat version to install
     ui_manager_user: manager                    # User who can access the UI manager section only
     ui_manager_pass: PoshaBiral@2023            # UI manager user password
     ui_admin_username: admin                    # User who can access bpth manager and admin UI sections
     ui_admin_pass: PoshaBiral@2023              # UI admin password
-  roles:
-    - tomcat
+
+  #roles:
+  #  - tomcat
 
     # - include_vars: inventories.yml
   
