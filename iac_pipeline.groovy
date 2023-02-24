@@ -43,10 +43,10 @@ pipeline {
       steps {
         catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
            //sh 'cd /var/lib/jenkins/workspace/training-iac/ansible/playbooks'
-           sh 'ansible-playbook ./ansible/playbooks/tomcat-setup.yml --user azureuser --private-key ./ansible/playbooks/my-trng-devops-ssh-04.pem'
-           ////withCredentials([sshUserPrivateKey(credentialsId: '1af83a22-d280-4642-a6bc-1e256e53a239', keyFileVariable: 'training_ssh')]) {
-              //sh 'ansible-playbook ./ansible/playbooks/tomcat-setup.yml --user azureuser --private-key ${training_ssh} -vvv'
-            //}//end withCredentials
+           //sh 'ansible-playbook ./ansible/playbooks/tomcat-setup.yml --user azureuser --private-key ./ansible/playbooks/my-trng-devops-ssh-04.pem'
+           withCredentials([sshUserPrivateKey(credentialsId: '1af83a22-d280-4642-a6bc-1e256e53a239', keyFileVariable: 'training_ssh')]) {
+              sh 'ansible-playbook ./ansible/playbooks/tomcat-setup.yml --user azureuser --private-key ${training_ssh} -vvv'
+            }//end withCredentials
           sh "exit 0"
          }//end catchError
       }//end steps
