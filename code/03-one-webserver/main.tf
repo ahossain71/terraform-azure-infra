@@ -150,7 +150,7 @@ resource "tls_private_key" "training_ssh" {
     rsa_bits = 4096
 }
 
-# Create a Virtual Machine
+# Create a Virtual Machine -1
 resource "azurerm_linux_virtual_machine" "tftraining" {
   name                            = "my-terraform-vm"
   location                        = azurerm_resource_group.tftraining.location
@@ -187,9 +187,46 @@ resource "azurerm_linux_virtual_machine" "tftraining" {
   }
 }
 
-# Configurate to run automated tasks in the VM start-up
+# Configurate to run automated tasks on tftraining in the VM start-up
 resource "azurerm_virtual_machine_extension" "tftraining" {
-  name                 = "hostname"
+  name                 = "tftraining"
+  virtual_machine_id   = azurerm_linux_virtual_machine.tftraining.id
+  publisher            = "Microsoft.Azure.Extensions"
+  type                 = "CustomScript"
+  type_handler_version = "2.1"
+
+  settings = <<SETTINGS
+    {
+      "commandToExecute": "echo 'Hello, World' > index.html ; nohup busybox httpd -f -p 8080 &"
+    }
+  SETTINGS
+
+  tags = {
+    environment = "my-terraform-env"
+  }
+}
+
+# Configurate to run automated tasks on tftomcat in the VM start-up
+resource "azurerm_virtual_machine_extension" "tftomcat" {
+  name                 = "tftomcat"
+  virtual_machine_id   = azurerm_linux_virtual_machine.tftomcat.id
+  publisher            = "Microsoft.Azure.Extensions"
+  type                 = "CustomScript"
+  type_handler_version = "2.1"
+
+  settings = <<SETTINGS
+    {
+      "commandToExecute": "echo 'Hello, World' > index.html ; nohup busybox httpd -f -p 8080 &"
+    }
+  SETTINGS
+
+  tags = {
+    environment = "my-terraform-env"
+  }
+}
+# Configuring another virtual Machine and naming t as tftomcat
+resource "azurerm_virtual_machine_extension" "tftomcat" {
+  name                 = "tomcatserver"
   virtual_machine_id   = azurerm_linux_virtual_machine.tftraining.id
   publisher            = "Microsoft.Azure.Extensions"
   type                 = "CustomScript"
@@ -211,8 +248,14 @@ data "azurerm_public_ip" "tftraining" {
   name                = azurerm_public_ip.tftraining.name
   resource_group_name = azurerm_linux_virtual_machine.tftraining.resource_group_name
 }
-
+data "azurerm_public_ip" "tftomcat" {
+  name                = azurerm_public_ip.tftomcat.name
+  resource_group_name = azurerm_linux_virtual_machine.tftomcat.resource_group_name
+}
 # Output variable: Public IP address
-output "public_ip" {
+output "public_ip-tftraining" {
   value = data.azurerm_public_ip.tftraining.ip_address
+}
+output "public_ip-tftomcat" {
+  value = data.azurerm_public_ip.tftomcat.ip_address
 }
