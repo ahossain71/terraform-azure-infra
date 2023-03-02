@@ -214,43 +214,6 @@ resource "azurerm_virtual_machine_extension" "tftraining" {
   }
 }
 
-# Configurate to run automated tasks on tftomcat in the VM start-up
-resource "azurerm_virtual_machine_extension" "tftomcat" {
-  name                 = "tftomcat"
-  virtual_machine_id   = azurerm_linux_virtual_machine.tftomcat.id
-  publisher            = "Microsoft.Azure.Extensions"
-  type                 = "CustomScript"
-  type_handler_version = "2.1"
-
-  settings = <<SETTINGS
-    {
-      "commandToExecute": "echo 'Hello, World' > index.html ; nohup busybox httpd -f -p 8080 &"
-    }
-  SETTINGS
-
-  tags = {
-    environment = "my-terraform-env"
-  }
-}
-# Configuring another virtual Machine and naming t as tftomcat
-resource "azurerm_virtual_machine_extension" "tftomcat" {
-  name                 = "tomcatserver"
-  virtual_machine_id   = azurerm_linux_virtual_machine.tftraining.id
-  publisher            = "Microsoft.Azure.Extensions"
-  type                 = "CustomScript"
-  type_handler_version = "2.1"
-
-  settings = <<SETTINGS
-    {
-      "commandToExecute": "echo 'Hello, World' > index.html ; nohup busybox httpd -f -p 8080 &"
-    }
-  SETTINGS
-
-  tags = {
-    environment = "my-terraform-env"
-  }
-}
-
 # Data source to access the properties of an existing Azure Public IP Address
 data "azurerm_public_ip" "tftraining" {
   name                = azurerm_public_ip.tftraining.name
