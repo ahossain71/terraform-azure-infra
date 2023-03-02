@@ -78,7 +78,7 @@ resource "azurerm_network_security_group" "tftraining" {
   name                = "my-terraform-nsg"
   location            = azurerm_resource_group.tftraining.location
   resource_group_name = azurerm_resource_group.tftraining.name
-  /*
+  
   security_rule {
     name                       = "HTTP"
     priority                   = 1001
@@ -90,10 +90,10 @@ resource "azurerm_network_security_group" "tftraining" {
     source_address_prefix      = "*"
     destination_address_prefix = "*"
   }
-  */
+  
   security_rule {
     name                       = "SSH"
-    priority                   = 1001
+    priority                   = 1010
     direction                  = "Inbound"
     access                     = "Allow"
     protocol                   = "Tcp"
@@ -145,10 +145,11 @@ data "azurerm_key_vault_key" "my-trng-devops-ssh-key-02" {
   key_vault_id = data.azurerm_key_vault.trng-devops-vault.id
 }
 */
-resource "tls_private_key" "training_ssh" {
+
+/*resource "tls_private_key" "training_ssh" {
     algorithm = "RSA"
     rsa_bits = 4096
-}
+}*/
 
 # Create a Virtual Machine -1
 resource "azurerm_linux_virtual_machine" "tftraining" {
@@ -160,13 +161,20 @@ resource "azurerm_linux_virtual_machine" "tftraining" {
   computer_name                   = "myvm"
   admin_username                  = "azureuser"
   admin_password                  = "Password1234!"
-   
+  
+  /* 
   admin_ssh_key {
     username = "azureuser"
     #public_key = data.azurerm_key_vault_key.my-trng-devops-ssh-key-02.public_key_openssh
     public_key = tls_private_key.training_ssh.public_key_openssh #The magic here
-    }
-    
+  }
+  */
+
+  admin_ssh_key {
+   username = "azureroot"
+   public_key = file("~/.ssh/training_ssh.pub")
+  }
+
   disable_password_authentication = true
 
   source_image_reference {
