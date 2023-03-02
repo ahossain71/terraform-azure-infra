@@ -43,7 +43,8 @@ pipeline {
       steps {
         catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
             withCredentials([sshUserPrivateKey(credentialsId: '1af83a22-d280-4642-a6bc-1e256e53a239', keyFileVariable: 'training_ssh')]) {
-              sh 'ansible-playbook ./ansible/playbooks/tomcat-setup.yml --user azureuser --private-key ${training_ssh} -vvv'
+              sh 'echo THIS IS THE PRIVATE KEY: ${training_ssh}'
+              sh 'ansible-playbook ./ansible/playbooks/tomcat-setup.yml --user azureuser --private-key ~/.ssh/training_ssh'
             }//end withCredentials
           sh "exit 0"
          }//end catchError
