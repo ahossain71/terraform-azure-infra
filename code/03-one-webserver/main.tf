@@ -219,14 +219,8 @@ data "azurerm_public_ip" "tftraining" {
   name                = azurerm_public_ip.tftraining.name
   resource_group_name = azurerm_linux_virtual_machine.tftraining.resource_group_name
 }
-data "azurerm_public_ip" "tftomcat" {
-  name                = azurerm_public_ip.tftomcat.name
-  resource_group_name = azurerm_linux_virtual_machine.tftomcat.resource_group_name
-}
+
 # Output variable: Public IP address
 output "public_ip-tftraining" {
   value = data.azurerm_public_ip.tftraining.ip_address
-}
-output "public_ip-tftomcat" {
-  value = data.azurerm_public_ip.tftomcat.ip_address
 }
