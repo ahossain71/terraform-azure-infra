@@ -4,6 +4,7 @@ pipeline {
   stages {
     stage('Submit Stack') { 
       steps {
+        step{
           catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
             withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'AutoCredName', usernameVariable: 'AutoCredUser', passwordVariable: 'AutoCredPass']]) {
               sh script:'''
@@ -21,12 +22,16 @@ pipeline {
               #echo "DESTROYING A VM RESOURCE IN THE RESOURCE GROUP"
               #terraform destroy -target=azurerm_linux_virtual_machine.tftraining -auto-approve
               '''
-              var_training_ssh = readfile('training_ssh.pem')
-              echo 'THIS IS THE PEM FILE : ${var_training_ssh}'
-            }//end withCredentials
+             }//end withCredentials
              sh "exit 0"
          }//end catcherror
+        }//end step
+        step{
+            var_training_ssh = readfile('training_ssh.pem')
+            echo 'THIS IS THE PEM FILE : ${var_training_ssh}'
+        }
       }
+
     }
     /*
     stage('Update Inventory'){
