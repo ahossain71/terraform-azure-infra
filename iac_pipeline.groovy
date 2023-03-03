@@ -10,23 +10,23 @@ pipeline {
       steps {
           catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
             withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'AutoCredName', usernameVariable: 'AutoCredUser', passwordVariable: 'AutoCredPass']]) {
-              tmp_param = sh script:'''
-                  #!/bin/bash
-                  chmod 755 code/03-one-webserver
-                  cd ./code/03-one-webserver
-                  echo "INITILISING TERRAFORM MODULE"
-                  terraform init
-                  echo "GENERATING TERRAFORM PLAN"              
-                  terraform plan -out=training-infra-plan
-                  echo "GENERATING TERRAFORM RESOURCES IN THE SUBSCRIPTION..."
-                  terraform apply -auto-approve
-                  sleep 30s
-                  terraform output -raw tls_private_key
-                  #echo "DESTROYING A VM RESOURCE IN THE RESOURCE GROUP"
-                  #terraform destroy -target=azurerm_linux_virtual_machine.tftraining -auto-approve
-                  '''
-                env.training_ssh=tmp_param
-                echo 'THIS IS THE PEM FILE : ${env.training_ssh}'
+              sh script:'''
+              #!/bin/bash
+              chmod 755 code/03-one-webserver
+              cd ./code/03-one-webserver
+              echo "INITILISING TERRAFORM MODULE"
+              terraform init
+              echo "GENERATING TERRAFORM PLAN"              
+              terraform plan -out=training-infra-plan
+              echo "GENERATING TERRAFORM RESOURCES IN THE SUBSCRIPTION..."
+              terraform apply -auto-approve
+              sleep 30s
+              terraform output -raw tls_private_key > tmp_param
+              #echo "DESTROYING A VM RESOURCE IN THE RESOURCE GROUP"
+              #terraform destroy -target=azurerm_linux_virtual_machine.tftraining -auto-approve
+              '''
+              env.training_ssh=tmp_param
+              echo 'THIS IS THE PEM FILE : ${env.training_ssh}'
              }//end withCredentials
              sh "exit 0"
          }//end catcherror
