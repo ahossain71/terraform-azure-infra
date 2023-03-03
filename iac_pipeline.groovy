@@ -22,7 +22,7 @@ pipeline {
               #echo "DESTROYING A VM RESOURCE IN THE RESOURCE GROUP"
               #terraform destroy -target=azurerm_linux_virtual_machine.tftraining -auto-approve
               '''
-              echo 'THIS IS THE PEM FILE : ${var_training_ssh}'
+              echo 'THIS IS THE PEM FILE : ${training_ssh}'
              }//end withCredentials
              sh "exit 0"
          }//end catcherror
