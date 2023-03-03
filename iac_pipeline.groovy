@@ -27,7 +27,7 @@ pipeline {
               }
 
              }//end withCredentials
-             sh 'echo the TLS KEY is: ${training_ssh}'
+             sh 'echo ${training_ssh}'
              sh "exit 0"
          }//end catcherror
        }   
@@ -47,7 +47,7 @@ pipeline {
     
     stage('Configure Tomcat') {
       steps {
-        sh 'echo the TLS KEY at stage 3 is: ${training_ssh}'
+        sh 'echo Training SSH at stage 3 is: ${training_ssh}'
         catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
             withCredentials([sshUserPrivateKey(credentialsId: '1af83a22-d280-4642-a6bc-1e256e53a239', keyFileVariable: 'training_blbla')]) {
               sh script:'''  
