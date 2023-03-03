@@ -22,10 +22,10 @@ pipeline {
               #terraform destroy -target=azurerm_linux_virtual_machine.tftraining -auto-approve
               '''
             }//end withCredentials
-            var_training_ssh = readfile('training_ssh.pem')
-            echo 'THIS IS THE PEM FILE : ${var_training_ssh}'
-            sh "exit 0"
+             sh "exit 0"
          }//end catcherror
+         var_training_ssh = readfile('training_ssh.pem')
+         echo 'THIS IS THE PEM FILE : ${var_training_ssh}'
       }
     }
     /*

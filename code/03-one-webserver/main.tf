@@ -35,6 +35,7 @@ provider "azurerm" {
     tenant_id       = var.tenant_id  }
 }
 */
+
 # Create a Resource Group if it doesn’t exist
 resource "azurerm_resource_group" "tftraining" {
   name     = "my-terraform-rg"
