@@ -1,5 +1,4 @@
 // Description pipeline
-def var_training_ssh = 'initial_value'
 
 pipeline {
   agent any
@@ -23,7 +22,6 @@ pipeline {
               #echo "DESTROYING A VM RESOURCE IN THE RESOURCE GROUP"
               #terraform destroy -target=azurerm_linux_virtual_machine.tftraining -auto-approve
               '''
-              var_training_ssh = readfile('training_ssh')
               echo 'THIS IS THE PEM FILE : ${var_training_ssh}'
              }//end withCredentials
              sh "exit 0"
