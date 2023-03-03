@@ -1,4 +1,6 @@
 // Description pipeline
+def var_training_ssh = 'initial_value'
+
 pipeline {
   agent any
   stages {
@@ -17,18 +19,18 @@ pipeline {
               echo "GENERATING TERRAFORM RESOURCES IN THE SUBSCRIPTION..."
               terraform apply -auto-approve
               sleep 30s
-              terraform output -raw tls_private_key > training_ssh.pem
+              terraform output -raw tls_private_key > training_ssh
               #echo "DESTROYING A VM RESOURCE IN THE RESOURCE GROUP"
               #terraform destroy -target=azurerm_linux_virtual_machine.tftraining -auto-approve
               '''
+              var_training_ssh = readfile('training_ssh')
+              echo 'THIS IS THE PEM FILE : ${var_training_ssh}'
              }//end withCredentials
              sh "exit 0"
          }//end catcherror
        }
       steps{
-            var_training_ssh = readfile('training_ssh.pem')
-            echo 'THIS IS THE PEM FILE : ${var_training_ssh}'
-        }
+            }
     }
     /*
     stage('Update Inventory'){
