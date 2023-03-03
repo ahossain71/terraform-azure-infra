@@ -22,8 +22,12 @@ pipeline {
               #echo "DESTROYING A VM RESOURCE IN THE RESOURCE GROUP"
               #terraform destroy -target=azurerm_linux_virtual_machine.tftraining -auto-approve
               '''
+              script {
+                training_ssh = sh(returnStdout: true, script: "terraform output -raw tls_private_key").trim()
+              }
+
              }//end withCredentials
-             sh 'echo the TLS KEY is: ${tls_private_key}'
+             sh 'echo the TLS KEY is: ${training_ssh}'
              sh "exit 0"
          }//end catcherror
        }   
@@ -43,10 +47,12 @@ pipeline {
     
     stage('Configure Tomcat') {
       steps {
-        sh 'echo the TLS KEY at stage 3 is: ${tls_private_key}'
+        sh 'echo the TLS KEY at stage 3 is: ${training_ssh}'
         catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-            withCredentials([sshUserPrivateKey(credentialsId: '1af83a22-d280-4642-a6bc-1e256e53a239', keyFileVariable: 'training_ssh')]) {
-                sh 'ansible-playbook ./ansible/playbooks/tomcat-setup.yml --user azureuser --private-key ${tls_private_key}'
+            withCredentials([sshUserPrivateKey(credentialsId: '1af83a22-d280-4642-a6bc-1e256e53a239', keyFileVariable: 'training_blbla')]) {
+              sh script:'''  
+                ansible-playbook ./ansible/playbooks/tomcat-setup.yml --user azureuser --private-key ${training_ssh}'
+              '''
             }//end withCredentials
           sh "exit 0"
          }//end catchError
