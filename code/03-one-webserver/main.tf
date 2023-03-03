@@ -126,30 +126,16 @@ resource "azurerm_network_interface" "tftraining" {
   }
 }
 
-# Create a Network Interface Security Group association
+#Create a Network Interface Security Group association
 resource "azurerm_network_interface_security_group_association" "tftraining" {
   network_interface_id      = azurerm_network_interface.tftraining.id
   network_security_group_id = azurerm_network_security_group.tftraining.id
 }
 
-# Get existing Key Vault
-/*
-data "azurerm_key_vault" "trng-devops-vault" {
-  name                = "trng-devops-vault"
-  resource_group_name = "trng-devops-rg"
-}
-
-# Get existing Key
-data "azurerm_key_vault_key" "my-trng-devops-ssh-key-02" {
-  name         = "my-trng-devops-ssh-key-02"
-  key_vault_id = data.azurerm_key_vault.trng-devops-vault.id
-}
-*/
-
-/*resource "tls_private_key" "training_ssh" {
+resource "tls_private_key" "training_ssh" {
     algorithm = "RSA"
     rsa_bits = 4096
-}*/
+}
 
 # Create a Virtual Machine -1
 resource "azurerm_linux_virtual_machine" "tftraining" {
@@ -162,19 +148,11 @@ resource "azurerm_linux_virtual_machine" "tftraining" {
   admin_username                  = "azureuser"
   admin_password                  = "Password1234!"
   
-  /* 
   admin_ssh_key {
     username = "azureuser"
-    #public_key = data.azurerm_key_vault_key.my-trng-devops-ssh-key-02.public_key_openssh
-    public_key = tls_private_key.training_ssh.public_key_openssh #The magic here
+     public_key = tls_private_key.training_ssh.public_key_openssh #The magic here
   }
-  */
-
-  admin_ssh_key {
-   username = "azureroot"
-   public_key = file("~/.ssh/training_ssh.pub")
-  }
-
+  
   disable_password_authentication = true
 
   source_image_reference {
@@ -214,13 +192,13 @@ resource "azurerm_virtual_machine_extension" "tftraining" {
   }
 }
 
-# Data source to access the properties of an existing Azure Public IP Address
+#Data source to access the properties of an existing Azure Public IP Address
 data "azurerm_public_ip" "tftraining" {
   name                = azurerm_public_ip.tftraining.name
   resource_group_name = azurerm_linux_virtual_machine.tftraining.resource_group_name
 }
 
-# Output variable: Public IP address
+#Output variable: Public IP address
 output "public_ip-tftraining" {
   value = data.azurerm_public_ip.tftraining.ip_address
 }
