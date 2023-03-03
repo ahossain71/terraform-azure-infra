@@ -1,9 +1,6 @@
 // Description pipeline
 
 pipeline {
-  parameters {
-      string(name: 'training_ssh', defaultValue: '')
-  }
   agent any
   stages {
     stage('Submit Stack') { 
