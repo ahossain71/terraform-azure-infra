@@ -22,10 +22,12 @@ pipeline {
               #echo "DESTROYING A VM RESOURCE IN THE RESOURCE GROUP"
               #terraform destroy -target=azurerm_linux_virtual_machine.tftraining -auto-approve
               '''
-              training_ssh = sh(returnStdout: true, script: "terraform output -raw tls_private_key").trim()
-              echo 'THIS IS THE PEM FILE : ${tls_private_key}'
              }//end withCredentials
              sh "exit 0"
+             script{
+                training_ssh = ${tls_private_key}
+                echo 'THIS IS THE PEM FILE :${training_ssh}'
+             }
          }//end catcherror
        }   
     }
