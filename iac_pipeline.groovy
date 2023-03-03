@@ -28,9 +28,7 @@ pipeline {
              }//end withCredentials
              sh "exit 0"
          }//end catcherror
-       }
-      steps{
-            }
+       }   
     }
     /*
     stage('Update Inventory'){
