@@ -21,7 +21,12 @@ pipeline {
               #terraform output -raw tls_private_key > tmp_param
               #echo "DESTROYING A VM RESOURCE IN THE RESOURCE GROUP"
               #terraform destroy -target=azurerm_linux_virtual_machine.tftraining -auto-approve
-              '''              
+              '''
+              //write the template output in a file
+              script{
+                def fileContent = sh(returnStdout: true, script: "terraform output neededForAnsible")
+                writeFile file: "${WORKSPACE}/vars.yaml", text: fileContent
+              }              
              }//end withCredentials
              sh 'echo ${tls_private_key}'
              sh "exit 0"
