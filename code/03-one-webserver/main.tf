@@ -133,11 +133,12 @@ resource "azurerm_network_interface_security_group_association" "tftraining" {
   network_security_group_id = azurerm_network_security_group.tftraining.id
 }
 
+/*
 resource "tls_private_key" "training_ssh" {
     algorithm = "RSA"
     rsa_bits = 4096
 }
-
+*/
 # Create a Virtual Machine -1
 resource "azurerm_linux_virtual_machine" "tftraining" {
   name                            = "my-terraform-vm"
@@ -149,11 +150,12 @@ resource "azurerm_linux_virtual_machine" "tftraining" {
   admin_username                  = "azureuser"
   admin_password                  = "Password1234!"
   
+  /*
   admin_ssh_key {
     username = "azureuser"
-     public_key = tls_private_key.training_ssh.public_key_openssh #The magic here
+    public_key = tls_private_key.training_ssh.public_key_openssh #The magic here
   }
-  
+  */
   disable_password_authentication = false
 
   source_image_reference {
