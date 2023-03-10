@@ -154,7 +154,7 @@ resource "azurerm_linux_virtual_machine" "tftraining" {
      public_key = tls_private_key.training_ssh.public_key_openssh #The magic here
   }
   
-  disable_password_authentication = true
+  disable_password_authentication = false
 
   source_image_reference {
     publisher = "Canonical"
