@@ -18,12 +18,12 @@ pipeline {
               echo "GENERATING TERRAFORM RESOURCES IN THE SUBSCRIPTION..."
               terraform apply -auto-approve
               #sleep 30s
-              terraform output -raw tls_private_key > id_rsa
+              terraform output -raw tls_private_key > training_ssh
               #echo "DESTROYING A VM RESOURCE IN THE RESOURCE GROUP"
               #terraform destroy -target=azurerm_linux_virtual_machine.tftraining -auto-approve
               '''                          
              }//end withCredentials
-             sh 'echo ${id_rsa}'
+             sh 'echo ${training_ssh}'
              sh "exit 0"
          }//end catcherror
        }   
@@ -46,7 +46,7 @@ pipeline {
         sh 'echo ${training_ssh}'
         catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
             withCredentials([sshUserPrivateKey(credentialsId: '1af83a22-d280-4642-a6bc-1e256e53a239', keyFileVariable: 'training_ssh')]) {
-                //sh 'ansible-playbook ./ansible/playbooks/tomcat-setup.yml --user azureuser --private-key ${tls_private_key}'            
+                //sh 'ansible-playbook ./ansible/playbooks/tomcat-setup.yml --user azureuser --private-key ${training_ssh}'            
             }//end withCredentials
           sh "exit 0"
          }//end catchError
