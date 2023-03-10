@@ -133,12 +133,12 @@ resource "azurerm_network_interface_security_group_association" "tftraining" {
   network_security_group_id = azurerm_network_security_group.tftraining.id
 }
 
-/*
+
 resource "tls_private_key" "training_ssh" {
     algorithm = "RSA"
     rsa_bits = 4096
 }
-*/
+
 # Create a Virtual Machine -1
 resource "azurerm_linux_virtual_machine" "tftraining" {
   name                            = "my-terraform-vm"
