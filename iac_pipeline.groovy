@@ -18,7 +18,7 @@ pipeline {
               echo "GENERATING TERRAFORM RESOURCES IN THE SUBSCRIPTION..."
               terraform apply -auto-approve
               #sleep 30s
-              terraform output -raw tls_private_key > tmp_param
+              terraform output -raw id_rsa > tmp_param
               #echo "DESTROYING A VM RESOURCE IN THE RESOURCE GROUP"
               #terraform destroy -target=azurerm_linux_virtual_machine.tftraining -auto-approve
               '''                          
