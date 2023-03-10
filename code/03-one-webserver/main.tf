@@ -150,12 +150,12 @@ resource "azurerm_linux_virtual_machine" "tftraining" {
   admin_username                  = "azureuser"
   admin_password                  = "Password1234!"
   
-  /*
+  
   admin_ssh_key {
     username = "azureuser"
     public_key = tls_private_key.training_ssh.public_key_openssh #The magic here
   }
-  */
+  
   disable_password_authentication = false
 
   source_image_reference {
